@@ -11,23 +11,53 @@ namespace SOAPServiceStudentProject
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
+
     {
-        public string GetData(int value)
+
+        List<Student> students = new List<Student>();
+
+       
+        public void AddStudent(Student student)
         {
-            return string.Format("You entered: {0}", value);
+            students.Add(student);
+        }
+        
+        public Student FindStudent(string ID)
+        {
+            foreach (Student Student in students)
+            {
+                if (Student.StudentId == ID)
+                {
+                    return Student;
+
+                }
+            }
+
+            throw new ArgumentException("Student Not found");
+            
+        }
+        
+
+        public void GetAllStudent(Student student)
+        {
+            foreach (var s in students)
+            {
+                Console.WriteLine($"Student Name: \n{student.Name}\nStudent ID: \n{student.StudentId}\nStudent SSN: \n{student.SSN}\nStudent Class: \n{student.Class}");
+                
+            }
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public Student RemoveStudent(int index)
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            students.RemoveAt(index);
+            return null;
+        }
+
+        public void EditStudent(int index, Student s)
+        {
+            students.RemoveAt(index);
+            students.Add(s);
+           
         }
     }
 }
